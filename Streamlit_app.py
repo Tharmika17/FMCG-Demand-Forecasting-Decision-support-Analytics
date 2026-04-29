@@ -11,7 +11,7 @@ st.set_page_config(page_title="FMCG Forecasting Dashboard", layout="wide")
 @st.cache_data
 def load_data():
     processed_df = pd.read_csv("processed_fmcg.csv")
-    engineered_df = pd.read_csv("processed_fmcg_engineered.csv")
+    engineered_df = pd.read_csv("processed_fmcg_engineered_small.csv")
     evaluation_df = pd.read_csv("evaluation_predictions.csv")
     sku_df = pd.read_csv("sku_level_metrics.csv")
     category_df = pd.read_csv("category_level_metrics.csv")
