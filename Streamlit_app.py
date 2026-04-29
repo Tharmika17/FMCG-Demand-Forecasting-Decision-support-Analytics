@@ -503,23 +503,25 @@ elif page == "Forecasting":
 
 
             # Final prediction
-            # Final prediction
             pred_df = pd.DataFrame([base_row]).drop(columns=["units_sold"], errors="ignore")
 
-            # Required model features
-            train_feature_cols = [col for col in engineered_df.columns if col != "units_sold"]
+            # Use feature names expected by the trained pipeline/model
+            if hasattr(model, "feature_names_in_"):
+                train_feature_cols = list(model.feature_names_in_)
+            elif hasattr(model, "named_steps"):
+                final_step = list(model.named_steps.values())[-1]
+                train_feature_cols = list(final_step.feature_names_in_)
+            else:
+                train_feature_cols = [col for col in engineered_df.columns if col != "units_sold"]
 
-            # Reindex to model feature order
             pred_df = pred_df.reindex(columns=train_feature_cols)
 
-            # Fill missing lag features
             if "price_l1" in pred_df.columns:
                 pred_df["price_l1"] = input_price
 
             if "promo_l1" in pred_df.columns:
                 pred_df["promo_l1"] = input_promo
 
-            # Fill any remaining missing values
             pred_df = pred_df.fillna(0)
 
             prediction = model.predict(pred_df)[0]
