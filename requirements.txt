@@ -1,8 +1,8 @@
 streamlit
 pandas
-numpy
+numpy==1.26.4
 joblib
 matplotlib
 lightgbm
-scikit-learn
+scikit-learn==1.4.2
 dill
